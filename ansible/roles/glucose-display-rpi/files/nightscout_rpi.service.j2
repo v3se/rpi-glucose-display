@@ -1,0 +1,9 @@
+[Unit]
+Description=RPI PyQT Nightscout Display
+
+[Service]
+ExecStart=/usr/bin/python3 /root/app/main.py
+WorkingDirectory=/root/app
+
+[Install]
+WantedBy=multi-user.target
