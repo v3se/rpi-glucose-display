@@ -12,6 +12,7 @@
       config_hdmi_boost=7
       hdmi_drive=1
       hdmi_ignore_edid=0xa5000080
+  notify: reboot
 - name: copy and replace /boot/cmdline.txt
   ansible.builtin.copy:
     src: cmdline.txt
