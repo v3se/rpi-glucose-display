@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Rpi Glucose
+Type=Application
+Comment=Some Comments about your program
+Exec=/usr/bin/python3 /home/vese/app/main.py

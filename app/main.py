@@ -69,6 +69,9 @@ class Window(QWidget):
         self.label_sgv.setFont(font)
         self.label_date_delta.setFont(font_smaller)
 
+        self.label_sgv.setStyleSheet("color: white;")
+        self.label_date_delta.setStyleSheet("color: white;")
+
         self.label_sgv.setAlignment(Qt.AlignCenter)
         self.label_date_delta.setAlignment(Qt.AlignCenter)
 
@@ -78,6 +81,8 @@ class Window(QWidget):
 
         # setting the layout to main window
         self.setLayout(layout)
+
+        self.setStyleSheet("background-color: black;")
 
         # creating a timer object
         timer = QTimer(self)
@@ -103,7 +108,7 @@ App = QApplication(sys.argv)
 window = Window()
 
 # showing all the widgets
-window.show()
+window.showMaximized()
 
 # start the app
 App.exit(App.exec_())

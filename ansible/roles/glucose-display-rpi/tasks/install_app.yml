@@ -7,27 +7,18 @@
   ansible.builtin.apt:
     name: python3-pip
     state: latest
+- name: copy desktop autostart files
+  ansible.builtin.copy:
+    src: RpiGlucose.desktop
+    dest: /home/vese/.config/autostart/RpiGlucose.desktop
+    force: true
 - name: copy app files
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../app"
-    dest: ~/
+    dest: /home/vese
     force: true
 - name: Install requirements
   ansible.builtin.pip:
-    requirements: ~/app/requirements.txt
+    requirements: /home/vese/app/requirements.txt
     executable: /usr/bin/pip3
-
-- name: Create a systemd service file
-  template:
-    src: nightscout_rpi.service.j2
-    dest: /etc/systemd/system/nightscout_rpi.service
-  notify: Reload systemd
-
-- name: Start and enable the systemd service
-  service:
-    name: nightscout_rpi
-    state: started
-    enabled: yes
-
-
 
