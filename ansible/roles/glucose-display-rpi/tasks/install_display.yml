@@ -49,11 +49,6 @@
     src: /usr/share/X11/xorg.conf.d/10-evdev.conf
     dest: /usr/share/X11/xorg.conf.d/45-evdev.conf
     force: true
-- name: copy xorg conf
-  ansible.builtin.copy:
-    src: xorg.conf
-    dest: /usr/share/X11/xorg.conf
-    force: true
 - name: copy autostart
   ansible.builtin.copy:
     src: autostart

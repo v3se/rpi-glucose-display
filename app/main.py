@@ -108,7 +108,7 @@ App = QApplication(sys.argv)
 window = Window()
 
 # showing all the widgets
-window.showMaximized()
+window.showFullScreen()
 
 # start the app
 App.exit(App.exec_())
