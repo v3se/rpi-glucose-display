@@ -1,7 +1,7 @@
 ---
 - name: reboot
   ansible.builtin.reboot:
-- name: Reload systemd
-  systemd:
-    daemon_reload: yes
-    state: reloaded
+- name: Restart LightDM service
+  ansible.builtin.service:
+    name: lightdm
+    state: restarted

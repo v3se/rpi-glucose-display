@@ -17,3 +17,6 @@ ID_LIKE=debian
 This playbook installs the display drivers and software to retrieve and display glucose values from Nightscout API. This project is very much work in progress.
 
 ![Image](glucose-display.JPG)
+
+## Logging
+Autostart will log the application stdout and stderr to /home/vese/.cache/lxsession/LXDE-pi/run.log

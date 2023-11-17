@@ -2,4 +2,4 @@
 Name=Rpi Glucose
 Type=Application
 Comment=Some Comments about your program
-Exec=/usr/bin/python3 /home/vese/app/main.py > /home/vese/app/logs/output.log 2>&1
+Exec=/usr/bin/python3 /home/vese/app/main.py
