@@ -36,12 +36,11 @@ def format_data(data):
     current_datetime = datetime.now()
     # Calculate the time difference
     time_difference = current_datetime - timestamp_datetime
-    sgv_with_arrow = f"<span style='font-size: 120px;'>{sgv_mmol}</span><span style='font-size: 100px; vertical-align: super;'>{direction_mapping[data[0]['direction']]}</span>"
     minutes_ago = custom_round(time_difference.total_seconds() / 60)
+    sgv_with_arrow = f"<span style='font-size: 120px;'>{sgv_mmol}</span><span style='font-size: 100px; vertical-align: super;'> {direction_mapping[data[0]['direction']]}</span><br><span style='font-size: 20px;'>{str(minutes_ago)} min ago</span>"
 
     return {
         'sgv': sgv_with_arrow,
-        'date_delta': minutes_ago,
     }
 
 
@@ -59,25 +58,20 @@ class Window(QWidget):
         # creating font object
         font = QFont('Arial', 120, QFont.Bold)
         # Adjust the font size as needed
-        font_smaller = QFont('Arial', 40, QFont.Bold)
+        font_smaller = QFont('Arial', 20, QFont.Bold)
 
         # creating a label object
         self.label_sgv = QLabel()
-        self.label_date_delta = QLabel()
 
         # Set font and alignment for each label
         self.label_sgv.setFont(font)
-        self.label_date_delta.setFont(font_smaller)
 
         self.label_sgv.setStyleSheet("color: white;")
-        self.label_date_delta.setStyleSheet("color: white;")
 
         self.label_sgv.setAlignment(Qt.AlignCenter)
-        self.label_date_delta.setAlignment(Qt.AlignCenter)
 
         # Add labels to the layout
         layout.addWidget(self.label_sgv)
-        layout.addWidget(self.label_date_delta)
 
         # setting the layout to main window
         self.setLayout(layout)
@@ -98,8 +92,6 @@ class Window(QWidget):
         apiFetcher = ApiFetcher(url)
         data = format_data(apiFetcher.fetch_nightscout_data())
         self.label_sgv.setText(f'<html>{data["sgv"]}</html>')
-        self.label_date_delta.setText(str(data['date_delta']) + " min ago")
-
 
 # create pyqt5 app
 App = QApplication(sys.argv)

@@ -12,13 +12,30 @@
     src: RpiGlucose.desktop
     dest: /home/vese/.config/autostart/RpiGlucose.desktop
     force: true
+  tags: install_app
 - name: copy app files
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/../app"
     dest: /home/vese
     force: true
+  tags: install_app
+  notify: reboot
+- name: Create logs directory
+  ansible.builtin.file:
+    path: /home/vese/app/logs
+    state: directory
+    owner: vese
+    mode: 0755
+  tags: install_app
+- name: Create output.log file
+  ansible.builtin.file:
+    path: /home/vese/app/logs/output.log
+    state: touch
+    owner: vese
+    mode: 0644
+  tags: install_app
 - name: Install requirements
   ansible.builtin.pip:
     requirements: /home/vese/app/requirements.txt
     executable: /usr/bin/pip3
-
+  tags: install_app

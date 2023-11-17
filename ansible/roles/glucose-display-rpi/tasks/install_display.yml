@@ -43,13 +43,17 @@
   ansible.builtin.apt:
     name: xserver-xorg-input-evdev
     state: present
+- name: install unclutter to disable mouse cursor
+  ansible.builtin.apt:
+    name: unclutter
+    state: present
 - name: copy evdev conf
   ansible.builtin.copy:
     remote_src: yes
     src: /usr/share/X11/xorg.conf.d/10-evdev.conf
     dest: /usr/share/X11/xorg.conf.d/45-evdev.conf
     force: true
-- name: copy autostart
+- name: disable rpi toolbar and screen timeout
   ansible.builtin.copy:
     src: autostart
     dest: /etc/xdg/lxsession/LXDE-pi/autostart
