@@ -21,6 +21,8 @@ direction_mapping = {
     'FortyFiveDown': '↘',
 }
 
+WINDOW_WIDTH = 320
+WINDOW_HEIGHT = 240
 
 def custom_round(number):
     # Check if the absolute value is less than 0.5
@@ -47,8 +49,8 @@ class Window(QWidget):
         super().__init__()
 
         # setting geometry of the main window
-        self.setFixedWidth(320)
-        self.setFixedHeight(240)
+        self.setFixedWidth(WINDOW_WIDTH)
+        self.setFixedHeight(WINDOW_HEIGHT)
 
         # creating a vertical layout
         main_layout = QVBoxLayout()
