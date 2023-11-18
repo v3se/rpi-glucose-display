@@ -54,7 +54,7 @@ class Window(QWidget):
         main_layout = QVBoxLayout()
 
         # creating font object
-        font_sgv = QFont('Arial', 90, QFont.Bold)  # Increase font size for label_sgv
+        font_sgv = QFont('Arial', 85, QFont.Bold)  # Increase font size for label_sgv
         font_direction = QFont('Arial', 50)  # Adjust font size for label_direction
         font_smaller = QFont('Arial', 20, QFont.Bold)
 
@@ -73,6 +73,7 @@ class Window(QWidget):
         self.label_direction.setStyleSheet("color: white; margin-left: -10px;")  # Adjust margin for closer spacing
         sgv_direction_layout.addWidget(self.label_sgv)
         sgv_direction_layout.addWidget(self.label_direction)
+        sgv_direction_layout.setAlignment(Qt.AlignCenter)
 
         # creating a label object for minutes_ago
         self.label_minutes_ago = QLabel()
@@ -80,12 +81,12 @@ class Window(QWidget):
         self.label_minutes_ago.setStyleSheet("color: white;")
         self.label_minutes_ago.setAlignment(Qt.AlignCenter)
 
+        self.setContentsMargins(0, 20, 0, 0)  # Adjust the top margin value
         # Add the horizontal layout and minutes_ago label to the vertical layout
         main_layout.addStretch(1)  # Add stretch to center widgets vertically
         main_layout.addLayout(sgv_direction_layout)
         main_layout.addWidget(self.label_minutes_ago)
         main_layout.addStretch(1)  # Add stretch to center widgets vertically
-        main_layout.addSpacing(30)
         # setting the main layout to the main window
         self.setLayout(main_layout)
 
