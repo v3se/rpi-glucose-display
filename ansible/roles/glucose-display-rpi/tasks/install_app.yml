@@ -17,22 +17,7 @@
     src: "{{ playbook_dir }}/../app"
     dest: /home/vese
     force: true
-  tags: install_app
-- name: Ensure correct permissions for logs directory
-  ansible.builtin.file:
-    path: /home/vese/app/logs
-    state: directory
-    mode: '0755'
-    owner: vese
-    group: vese
-  tags: install_app
-- name: Ensure correct permissions for output.log file
-  ansible.builtin.file:
-    path: /home/vese/app/logs/output.log
-    state: touch
-    mode: '0644'
-    owner: vese
-    group: vese
+  notify: Restart LightDM service
   tags: install_app
 - name: Install requirements
   ansible.builtin.pip:

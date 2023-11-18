@@ -3,7 +3,7 @@ import sys
 import os
 from datetime import datetime
 from api_fetcher import ApiFetcher
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import QTimer, Qt
 from jinja2 import Template  # Install Jinja2 using pip
@@ -33,16 +33,12 @@ def format_data(data):
     timestamp_datetime = datetime.fromtimestamp(epoch_timestamp)
     current_datetime = datetime.now()
     time_difference = current_datetime - timestamp_datetime
-    minutes_ago = custom_round(time_difference.total_seconds() / 60)
-
-    with open('template.html', 'r') as template_file:
-        template_content = template_file.read()
-
-    template = Template(template_content)
-    sgv_with_arrow = template.render(sgv_mmol=sgv_mmol, direction_mapping=direction_mapping[data[0]['direction']], data=data, minutes_ago=minutes_ago)
+    minutes_ago = str(custom_round(time_difference.total_seconds() / 60))
 
     return {
-        'sgv': sgv_with_arrow
+        'sgv': sgv_mmol,
+        'minutes_ago': minutes_ago,
+        'direction': direction_mapping[data[0]["direction"]]
     }
 
 
@@ -51,28 +47,47 @@ class Window(QWidget):
         super().__init__()
 
         # setting geometry of the main window
-        self.setGeometry(100, 100, 320, 240)
+        self.setFixedWidth(320)
+        self.setFixedHeight(240)
 
         # creating a vertical layout
-        layout = QVBoxLayout()
+        main_layout = QVBoxLayout()
 
         # creating font object
-        font = QFont('Arial', 120, QFont.Bold)
+        font_sgv = QFont('Arial', 90, QFont.Bold)  # Increase font size for label_sgv
+        font_direction = QFont('Arial', 50)  # Adjust font size for label_direction
         font_smaller = QFont('Arial', 20, QFont.Bold)
 
-        # creating a label object
+        # creating a horizontal layout for sgv and direction
+        sgv_direction_layout = QHBoxLayout()
+
+        # creating a label object for sgv_mmol
         self.label_sgv = QLabel()
-
-        # Set font and alignment for the label
-        self.label_sgv.setFont(font)
+        self.label_sgv.setFont(font_sgv)
         self.label_sgv.setStyleSheet("color: white;")
-        self.label_sgv.setAlignment(Qt.AlignCenter)
+        self.label_sgv.setAlignment(Qt.AlignCenter)  # Center the label text
 
-        # Add label to the layout
-        layout.addWidget(self.label_sgv)
+        # creating a label object for direction_mapping
+        self.label_direction = QLabel()
+        self.label_direction.setFont(font_direction)
+        self.label_direction.setStyleSheet("color: white; margin-left: -10px;")  # Adjust margin for closer spacing
+        sgv_direction_layout.addWidget(self.label_sgv)
+        sgv_direction_layout.addWidget(self.label_direction)
 
-        # setting the layout to the main window
-        self.setLayout(layout)
+        # creating a label object for minutes_ago
+        self.label_minutes_ago = QLabel()
+        self.label_minutes_ago.setFont(font_smaller)
+        self.label_minutes_ago.setStyleSheet("color: white;")
+        self.label_minutes_ago.setAlignment(Qt.AlignCenter)
+
+        # Add the horizontal layout and minutes_ago label to the vertical layout
+        main_layout.addStretch(1)  # Add stretch to center widgets vertically
+        main_layout.addLayout(sgv_direction_layout)
+        main_layout.addWidget(self.label_minutes_ago)
+        main_layout.addStretch(1)  # Add stretch to center widgets vertically
+        main_layout.addSpacing(30)
+        # setting the main layout to the main window
+        self.setLayout(main_layout)
 
         self.setStyleSheet("background-color: black;")
 
@@ -90,6 +105,14 @@ class Window(QWidget):
         apiFetcher = ApiFetcher(url)
         data = format_data(apiFetcher.fetch_nightscout_data())
         self.label_sgv.setText(f'<html>{data["sgv"]}</html>')
+        self.label_direction.setText(f'<html>{data["direction"]}</html>')
+
+        # Only display minutes_ago if the delta is over 5 minutes
+        delta_minutes = int(data["minutes_ago"])
+        if delta_minutes > 5:
+            self.label_minutes_ago.setText(f'<html>Readings late {delta_minutes} mins</html>')
+        else:
+            self.label_minutes_ago.clear()  # Clear the label if delta is not over 5 minutes
 
 
 # create PyQt5 app
